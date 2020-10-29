@@ -18,15 +18,7 @@ public class Lesson5Ex10 extends ConfProperties{
         String priceActColMain = driver.findElement(By.cssSelector("div#box-campaigns div.content ul li a div.price-wrapper strong")).getCssValue("color");
         String priceSizeMain = driver.findElement(By.cssSelector("div#box-campaigns div.content ul li a div.price-wrapper s")).getCssValue("fontSize");
         String priceActSizeMain = driver.findElement(By.cssSelector("div#box-campaigns div.content ul li a div.price-wrapper strong")).getCssValue("fontSize");
-        System.out.println(nameMain);
-        System.out.println(priceMain);
-        System.out.println(priceActMain);
-        System.out.println(priceStyleMain);
-        System.out.println(priceColMain);
-        System.out.println(priceActStyleMain);
-        System.out.println(priceActColMain);
-        System.out.println(priceSizeMain);
-        System.out.println(priceActSizeMain);
+
         driver.findElement(By.cssSelector("div#box-campaigns div.content ul li a.link")).click();
         try {
             Thread.sleep(20000);
@@ -40,24 +32,35 @@ public class Lesson5Ex10 extends ConfProperties{
         String priceColProd = driver.findElement(By.cssSelector("s.regular-price")).getCssValue("color");
         String priceActStyleProd = driver.findElement(By.cssSelector("strong.campaign-price")).getCssValue("fontWeight");
         String priceActColProd = driver.findElement(By.cssSelector("strong.campaign-price")).getCssValue("color");
-        float priceSizeProd = Float.parseFloat(driver.findElement(By.cssSelector("s.regular-price")).getCssValue("fontSize"));
-        float priceActSizeProd = Float.parseFloat(driver.findElement(By.cssSelector("strong.campaign-price")).getCssValue("fontSize"));
-        System.out.println(nameProd);
-        System.out.println(priceProd);
-        System.out.println(priceActProd);
-        System.out.println(priceStyleProd);
-        System.out.println(priceColProd);
-        System.out.println(priceActStyleProd);
-        System.out.println(priceActColProd);
-        System.out.println(priceSizeProd);
-        System.out.println(priceActSizeProd);
-        //assertTrue(nameMain == nameProd);
-        assertTrue(priceMain == priceProd);
-        assertTrue(priceActMain == priceActProd);
+        String priceSizeProd = (driver.findElement(By.cssSelector("s.regular-price")).getCssValue("fontSize"));
+        String priceActSizeProd = (driver.findElement(By.cssSelector("strong.campaign-price")).getCssValue("fontSize"));
 
-
-
-
+        //а) на главной странице и на странице товара совпадает текст названия товара
+        assertTrue(nameMain.equalsIgnoreCase(nameProd));
+        //б) на главной странице и на странице товара совпадают цены (обычная и акционная)
+        assertTrue(priceMain.equalsIgnoreCase(priceProd));
+        assertTrue(priceActMain.equalsIgnoreCase(priceActProd));
+        //в) обычная цена зачёркнутая и серая
+        int[] col = colorRGB(priceColMain);
+        assertTrue(col[0]==col[1]&&col[1]==col[2]);
+        int[] colProd = colorRGB(priceColProd);
+        assertTrue(colProd[0]==colProd[1]&&colProd[1]==colProd[2]);
+        assertTrue(priceStyleMain.equalsIgnoreCase("line-through"));
+        assertTrue(priceStyleProd.equalsIgnoreCase("line-through"));
+        //г) акционная жирная и красная
+        int[] colAct = colorRGB(priceActColMain);
+        assertTrue(colAct[1]==0&&colAct[2]==0);
+        int[] colActProd = colorRGB(priceActColProd);
+        assertTrue(colActProd[1]==0&&colActProd[2]==0);
+        int t = Integer.parseInt(priceActStyleMain);
+        assertTrue(t > 400);
+        //г) акционная цена крупнее, чем обычная
+        float fontSize = fontSizePX(priceSizeMain);
+        float fontSizeAct = fontSizePX(priceActSizeMain);
+        assertTrue(fontSize < fontSizeAct);
+        float fontSizeProd = fontSizePX(priceSizeProd);
+        float fontSizeActProd = fontSizePX(priceActSizeProd);
+        assertTrue(fontSizeProd < fontSizeActProd);
 
     }
 

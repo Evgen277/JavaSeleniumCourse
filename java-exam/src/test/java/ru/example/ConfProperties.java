@@ -57,6 +57,22 @@ public class ConfProperties {
         }
     }
 
+    public static int[] colorRGB(String priceCol) {
+        String colRGB = priceCol.replaceAll("[,.rgba)(]", "");
+        String strArrRGB[] = colRGB.split(" ");
+        int numArrRGB[] = new int[strArrRGB.length];
+        for (int i = 0; i < strArrRGB.length; i++) {
+            numArrRGB[i] = Integer.parseInt(strArrRGB[i]);
+        }
+        return numArrRGB;
+    }
+
+    public static float fontSizePX(String priceSize) {
+        String priceFont = priceSize.replaceAll("[px]", "");
+        float numArrPX = Float.parseFloat(priceFont);
+        return numArrPX;
+    }
+
     @Before
     public void start() {
         if (tlDriver.get() != null) {
