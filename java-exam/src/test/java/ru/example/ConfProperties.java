@@ -77,14 +77,14 @@ public class ConfProperties {
     public void start() {
         if (tlDriver.get() != null) {
             driver = tlDriver.get();
-            wait = new WebDriverWait(driver, 10);
+            wait = new WebDriverWait(driver, 15);
             return;
         }
         System.setProperty("webdriver.chrome.driver", ConfProperties.getProperty("chromedriver.path"));
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         tlDriver.set(driver);
-        wait = new WebDriverWait(driver, 10);
+        wait = new WebDriverWait(driver, 15);
         Runtime.getRuntime().addShutdownHook(
                 new Thread(() -> {
                     driver.quit();
