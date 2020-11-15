@@ -6,12 +6,15 @@ import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class ConfProperties {
@@ -48,6 +51,16 @@ public class ConfProperties {
         } catch (NoSuchElementException ex){
             return false;
         }
+    }
+
+    public ExpectedCondition<String>anyWindowOtherThan(Set<String> oldWindows){
+        return new ExpectedCondition<String>() {
+            public String apply(WebDriver driver) {
+                Set<String>handles = driver.getWindowHandles();
+                handles.removeAll(oldWindows);
+                return  handles.size() > 0 ? handles.iterator().next():null;
+            }
+        };
     }
     public boolean areElementsPresent(By locator) {
         try {
